@@ -42,3 +42,46 @@
 	 (semantic-add-system-include dir 'c++-mode)
 	 (semantic-add-system-include dir 'c-mode))
 	 include-dirs))
+
+;meta-up & down from textmate
+
+ (global-set-key [(meta up)] 'move-line-up)
+(global-set-key [(meta down)] 'move-line-down) 
+(defun move-line (&optional n)
+ "Move current line N (1) lines up/down leaving point in place."
+ (interactive "p")
+ (when (null n)
+    (setq n 1))
+ (let ((col (current-column)))
+    (beginning-of-line)
+    (next-line 1)
+    (transpose-lines n)
+    (previous-line 1)
+    (forward-char col)))
+(defun move-line-up (n)
+ "Moves current line N (1) lines up leaving point in place."
+ (interactive "p")
+ (move-line (if (null n) -1 (- n)))) 
+(defun move-line-down (n)
+ "Moves current line N (1) lines down leaving point in place."
+ (interactive "p")
+ (move-line (if (null n) 1 n)))
+
+;vi-open-next-line
+(global-set-key [(control o)] 'vi-open-next-line)
+(defun vi-open-next-line (arg)
+ "Move to the next line (like vi) and then opens a line."
+ (interactive "p")
+ (end-of-line)
+ (open-line arg)
+ (next-line 1)
+ (indent-according-to-mode))
+
+;parent-match
+(global-set-key "%" 'match-paren)
+(defun match-paren (arg)
+ "Go to the matching parenthesis if on parenthesis otherwise insert %."
+ (interactive "p")
+ (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
+        ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
+        (t (self-insert-command (or arg 1)))))
