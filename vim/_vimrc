@@ -1,116 +1,41 @@
-set nocompatible
-source $VIMRUNTIME/vimrc_example.vim
-source $VIMRUNTIME/mswin.vim
-behave mswin
+call pathogen#runtime_append_all_bundles()
+set history=700
 
-syntax enable
-syntax on
-
-colorscheme 3dglasses
-
-set guifont=monaco:h11:b
-
-set dir=H:\Holding
-"Enable filetype plugin
+" Enable filetype plugin
 filetype plugin on
 filetype indent on
 
-"Set to auto read when a file is changed from the outside
+" Set to auto read when a file is changed from the outside
 set autoread
 
-"Have the mouse enabled all the time:
-set mouse=a
-
-"Set mapleader
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
 
-"Fast saving
+" Fast saving
 nmap <leader>w :w!<cr>
-nmap <leader>f :find<cr>
 
-"Fast reloading of the .vimrc
-map <leader>s :source $VIM/_vimrc<cr>
-"Fast editing of .vimrc
-map <leader>e :e! $VIM/_vimrc<cr>
-"When .vimrc is edited, reload it
-autocmd! bufwritepost vimrc source $VIM/_vimrc
+" Fast editing of the .vimrc
+map <leader>e :e! ~/.vimrc<cr>
 
-set diffexpr=MyDiff()
-function MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  let eq = ''
-  if $VIMRUNTIME =~ ' '
-    if &sh =~ '\<cmd'
-      let cmd = '""' . $VIMRUNTIME . '\diff"'
-      let eq = '"'
-    else
-      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-    endif
-  else
-    let cmd = $VIMRUNTIME . '\diff'
-  endif
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
-endfunction
+" When vimrc is edited, reload it
+autocmd! bufwritepost vimrc source ~/.vimrc
 
-" Statusline
-  """"""""""""""""""""""""""""""
-  "Always hide the statusline
-  set laststatus=2
+colorscheme molokai
 
-  function! CurDir()
-     let curdir = substitute(getcwd(), '/Users/amir/', "~/", "g")
-     return curdir
-  endfunction
+set encoding=utf8
 
-  "Format the statusline
-  set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+set ai "Auto indent
+set si "Smart indet
+set wrap "Wrap lines
 
-""""""""""""""""""""""""""""""
-" Visual
-""""""""""""""""""""""""""""""
-" From an idea by Michael Naumann
-function! VisualSearch(direction) range
-  let l:saved_reg = @"
-  execute "normal! vgvy"
-  let l:pattern = escape(@", '\\/.*$^~[]')
-  let l:pattern = substitute(l:pattern, "\n$", "", "")
-  if a:direction == 'b'
-    execute "normal ?" . l:pattern . "^M"
-  else
-    execute "normal /" . l:pattern . "^M"
-  endif
-  let @/ = l:pattern
-  let @" = l:saved_reg
-endfunction
 
-"Basically you press * or # to search for the current selection !! Really useful
-vnoremap <silent> * :call VisualSearch('f')<CR>
-vnoremap <silent> # :call VisualSearch('b')<CR>
+" Smart way to move btw. windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
 
- " Minibuffer
-   """"""""""""""""""""""""""""""
-   let g:miniBufExplModSelTarget = 1
-   let g:miniBufExplorerMoreThanOne = 2
-   let g:miniBufExplModSelTarget = 0
-   let g:miniBufExplUseSingleClick = 1
-   let g:miniBufExplMapWindowNavVim = 1
-   let g:miniBufExplVSplit = 25
-   let g:miniBufExplSplitBelow=1
-
-   let g:bufExplorerSortBy = "name"
-   autocmd BufRead,BufNew :call UMiniBufExplorer
-
-set number
-
-map <F8> :NERDTree <CR>
-
- let g:pydiction_location = 'E:/pydiction/complete-dict'
+" Close the current buffer
+map <leader>bd :Bclose<cr>
