@@ -1,0 +1,37 @@
+Config { font = "xft:Sarasa Mono SC Nerd:size=11:antialias=true"
+       , additionalFonts = []
+       , borderColor = "black"
+       , border = TopB
+       , bgColor = "black"
+       , fgColor = "grey"
+       , alpha = 255
+       , position = TopSize L 100 24
+       , textOffset = -1
+       , iconOffset = -1
+       , lowerOnStart = True
+       , pickBroadest = False
+       , persistent = True
+       , hideOnStart = False
+       , iconRoot = "./icon/"
+       , allDesktops = True
+       , overrideRedirect = True
+       , commands = [ Run Weather "EHAM" ["-t","<station>: <tempC>C",
+                                          "-L","18","-H","25",
+                                          "--normal","green",
+                                          "--high","red",
+                                          "--low","lightblue"] 36000
+                    , Run Network "wlo1" ["-L","0","-H","32",
+                                          "--normal","green","--high","red"] 10
+                    ,  Run Wireless "wlo1" ["-t", "<essid>"] 10
+                    , Run Cpu ["-L","3","-H","50",
+                               "--normal","green","--high","red"] 10
+                    , Run Memory ["-t","Mem: <usedratio>%"] 10
+                    , Run Swap [] 10
+                    , Run Com "uname" ["-n"] "" 36000
+                    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+		    , Run XMonadLog
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = " %XMonadLog% }{ %cpu% | %memory% * %swap% | %wlo1wi%  <fc=#ee9a00>%date%</fc>| %EHAM% | %uname%"
+       }
