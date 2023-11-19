@@ -57,8 +57,8 @@ alias cd...='cd ../..'
 alias cd....='cd ../../..'
 alias cd.....='cd ../../../..'
 alias mount='sudo mount'
-alias la='exa -alF --icons'
-alias ls='exa -lF --icons'
+alias la='eza -alF --icons'
+alias ls='eza -lF --icons'
 alias g=git
 alias gti=git
 alias q=exit
@@ -107,6 +107,8 @@ function spaces {
 
 export FZF_COMPLETION_TRIGGER='~~'
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS"
+
+
 --height 40%
 --reverse
 --bind 'ctrl-f:preview-page-down,ctrl-b:preview-page-up'
